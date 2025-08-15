@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Weather from "@/components/Weather";
+import { CurrentWeatherData } from "@/slices/weatherSlice";
+
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const currentWeather: CurrentWeatherData = {
+    cloud: 0,
+    condition: "Sunny",
+    country: "Mexico",
+    feelslike_c: 12,
+    feelslike_f: 70,
+    humidity: 0,
+    location: "Mexico City",
+    region: "The Federal District",
+    temp_c: 10,
+    temp_f: 60,
+    time_set: "2023-12-31 12:00:00",
+    uv: 14,
+    wind_kph: 60,
+    wind_mph: 90,
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div
+        style={{
+          alignItems: "center",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          width: "100%",
+        }}
+      >
+        <Weather weather={currentWeather} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
