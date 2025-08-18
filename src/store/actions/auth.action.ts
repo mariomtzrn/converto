@@ -56,7 +56,7 @@ export const loginUser = createAsyncThunk<
   }
 });
 
-export const logoutUser = async () => {
+export const logoutUser = async (): Promise<LoginResponse | null> => {
   try {
     const res = await fetch(`${VITE_API_URL}/auth/logout`, {
       credentials: "include",
