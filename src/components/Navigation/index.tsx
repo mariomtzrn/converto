@@ -71,7 +71,7 @@ export default function Navigation() {
         handleLogout={handleLogout}
         handleSettings={handleSettings}
       />
-      <Container as="div" flex="1" maxW={"100%"} p="0">
+      <Container as="div" flex="1" marginTop="50px" p="20px">
         <Outlet />
       </Container>
     </Container>

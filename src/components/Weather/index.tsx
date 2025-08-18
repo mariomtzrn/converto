@@ -27,7 +27,10 @@ export default function Weather(props: Props) {
       transition="ease-in-out"
       transitionDuration="0.1s"
       variant="outline"
-      width="320px"
+      width={{
+        base: "100%",
+        md: "320px",
+      }}
     >
       <Card.Body gap="2">
         <Card.Title maxW="80%">{weather.location}</Card.Title>
