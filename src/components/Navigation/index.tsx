@@ -71,7 +71,7 @@ export default function Navigation() {
         handleLogout={handleLogout}
         handleSettings={handleSettings}
       />
-      <Container as="div" flex="1" marginTop="50px" p="20px">
+      <Container as="div" flex="1" marginTop={{ base: "70px", md: "70px" }}>
         <Outlet />
       </Container>
     </Container>
