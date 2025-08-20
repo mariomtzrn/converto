@@ -1,6 +1,6 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { fireEvent, render, screen } from "@testing-library/react";
-import { BrowserRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 
 import NavBar from "@/components/NavBar";
@@ -16,9 +16,9 @@ const renderNavBar = (props = {}) => {
 
   return render(
     <ChakraProvider value={system}>
-      <BrowserRouter>
+      <MemoryRouter>
         <NavBar {...defaultProps} />
-      </BrowserRouter>
+      </MemoryRouter>
     </ChakraProvider>,
   );
 };
