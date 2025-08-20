@@ -18,43 +18,67 @@ import { baseButton } from "@/assets/styles";
 import { PasswordInput } from "@/components/ui/password-input";
 
 interface FormValues {
+  email: string;
   password: string;
+  passwordConfirm: string;
   username: string;
 }
 
-export default function SignInForm() {
+export default function SignUpForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     formState: { errors },
     handleSubmit,
     register,
+    watch,
   } = useForm<FormValues>();
+
+  const password = watch("password");
 
   const onSubmit = handleSubmit(async (data) => {
     setIsSubmitting(true);
     try {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      const { username, password } = data;
+      const { email, password, passwordConfirm, username } = data;
     } finally {
       setIsSubmitting(false);
     }
   });
 
   return (
-    <form aria-label="Sign in form" onSubmit={onSubmit}>
+    <form aria-label="Sign up form" onSubmit={onSubmit}>
       <Fieldset.Root size="lg">
         <Stack>
           <Fieldset.Legend>
-            <Heading as="h2">Sign in</Heading>
+            <Heading as="h2">Sign up</Heading>
           </Fieldset.Legend>
           <Fieldset.HelperText color="#fff">
-            Please provide your account credentials.
+            Create an account to continue.
           </Fieldset.HelperText>
         </Stack>
 
         <Fieldset.Content>
           <Stack gap="4" maxW="sm">
+            <Field.Root invalid={!!errors.email}>
+              <Field.Label>Email</Field.Label>
+              <Input
+                {...register("email", {
+                  pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  required: true,
+                })}
+                variant="subtle"
+              />
+              <Field.ErrorText>
+                {errors.email?.type === "required" && (
+                  <Text role="alert">Email is required.</Text>
+                )}
+                {errors.email?.type === "pattern" && (
+                  <Text role="alert">Email is invalid.</Text>
+                )}
+              </Field.ErrorText>
+            </Field.Root>
+
             <Field.Root invalid={!!errors.username}>
               <Field.Label>Username</Field.Label>
               <Input
@@ -63,10 +87,9 @@ export default function SignInForm() {
                   minLength: 4,
                   required: true,
                 })}
-                aria-describedby="username-error"
                 variant="subtle"
               />
-              <Field.ErrorText id="username-error">
+              <Field.ErrorText>
                 {errors.username?.type === "required" && (
                   <Text role="alert">Username is required.</Text>
                 )}
@@ -91,10 +114,9 @@ export default function SignInForm() {
                   minLength: 6,
                   required: true,
                 })}
-                aria-describedby="password-error"
                 variant="subtle"
               />
-              <Field.ErrorText id="password-error">
+              <Field.ErrorText>
                 {errors.password?.type === "required" && (
                   <Text role="alert">Password is required.</Text>
                 )}
@@ -105,8 +127,41 @@ export default function SignInForm() {
                 )}
                 {errors.password?.type === "maxLength" && (
                   <Text role="alert">
+                    Password must be at most 20 characters.
+                  </Text>
+                )}
+              </Field.ErrorText>
+            </Field.Root>
+
+            <Field.Root invalid={!!errors.passwordConfirm}>
+              <Field.Label>Confirm Password</Field.Label>
+              <PasswordInput
+                {...register("passwordConfirm", {
+                  maxLength: 30,
+                  minLength: 6,
+                  required: true,
+                  validate: (value) =>
+                    value === password || "Passwords do not match",
+                })}
+                aria-describedby="passwordConfirm-error"
+                variant="subtle"
+              />
+              <Field.ErrorText id="passwordConfirm-error">
+                {errors.passwordConfirm?.type === "required" && (
+                  <Text role="alert">Password confirmation is required.</Text>
+                )}
+                {errors.passwordConfirm?.type === "minLength" && (
+                  <Text role="alert">
+                    Password must be at least 6 characters.
+                  </Text>
+                )}
+                {errors.passwordConfirm?.type === "maxLength" && (
+                  <Text role="alert">
                     Password must be at most 30 characters.
                   </Text>
+                )}
+                {errors.passwordConfirm?.type === "validate" && (
+                  <Text role="alert">{errors.passwordConfirm.message}</Text>
                 )}
               </Field.ErrorText>
             </Field.Root>
@@ -115,16 +170,19 @@ export default function SignInForm() {
               {...baseButton.base}
               _active={baseButton.active}
               _hover={baseButton.hover}
-              aria-label={isSubmitting ? "Signing in..." : "Sign in"}
+              aria-label={
+                isSubmitting ? "Creating account..." : "Create account"
+              }
               disabled={isSubmitting}
               loading={isSubmitting}
               type="submit"
             >
-              {isSubmitting ? "Signing In..." : "Sign In"}
+              {isSubmitting ? "Creating Account..." : "Create Account"}
             </Button>
             <Center>
               <Text>
-                Don't have an account? <Link to="/account/signup">Sign up</Link>
+                Already have an account?{" "}
+                <Link to="/account/signin">Sign in</Link>
               </Text>
             </Center>
           </Stack>

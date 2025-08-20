@@ -16,12 +16,8 @@ export default function SignFormWrapper() {
         boxShadow="1px 1px 16px rgba(255, 255, 255, 0.3)"
         boxSizing="border-box"
         height="100%"
-        maxHeight={{
-          base: "400px",
-          md: "400px",
-        }}
         maxWidth={{
-          base: "320px",
+          base: "90vw",
           md: "400px",
         }}
         transition="ease-in-out"
