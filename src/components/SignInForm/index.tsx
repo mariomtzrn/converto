@@ -2,6 +2,7 @@
 
 import {
   Button,
+  Center,
   Field,
   Fieldset,
   Heading,
@@ -10,6 +11,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 
 import { PasswordInput } from "@/components/ui/password-input";
 
@@ -123,6 +125,11 @@ export default function SignInForm() {
             >
               Submit
             </Button>
+            <Center>
+              <Text>
+                Don't have an account? <Link to="/account/signup">Sign up</Link>
+              </Text>
+            </Center>
           </Stack>
         </Fieldset.Content>
       </Fieldset.Root>
