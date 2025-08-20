@@ -1,8 +1,8 @@
 import { Card, Flex, Spinner } from "@chakra-ui/react";
 
 interface Props {
-  boxDescription: string;
-  boxTitle: string;
+  boxDescription?: string;
+  boxTitle?: string;
   children: React.ReactNode;
   desktopWidth: string;
   isLoading: boolean;
@@ -45,14 +45,10 @@ export default function CardWrapper(props: Props) {
       zIndex={1}
     >
       <Card.Body gap="2">
-        <Card.Title maxW="80%">{boxTitle}</Card.Title>
-        <Card.Description
-          color="gray.400"
-          fontSize="0.8rem"
-          marginTop="-0.5rem"
-        >
-          {boxDescription}
-        </Card.Description>
+        {boxTitle && <Card.Title maxW="80%">{boxTitle}</Card.Title>}
+        {boxDescription && (
+          <Card.Description maxW="80%">{boxDescription}</Card.Description>
+        )}
         {isLoading ? loadingContainer : children}
       </Card.Body>
     </Card.Root>

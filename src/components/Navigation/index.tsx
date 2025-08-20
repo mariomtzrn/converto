@@ -26,7 +26,7 @@ export default function Navigation() {
       } catch (err: unknown) {
         console.error(err);
         dispatch(setUser(null));
-        navigate("/login");
+        navigate("/account/signin");
       }
     };
 
