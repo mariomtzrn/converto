@@ -4,8 +4,9 @@ import { Outlet, useNavigate } from "react-router-dom";
 
 import NavBar from "@/components/NavBar";
 import { useAppDispatch } from "@/hooks";
-import { logOut, setUser } from "@/slices/authSlice";
-import { logoutUser, verifySession } from "@/store/actions/auth.action";
+import ROUTES from "@/lib/routes";
+import { setUser, signOut } from "@/slices/authSlice";
+import { signoutUser, verifySession } from "@/store/actions/auth.action";
 
 export default function Navigation() {
   const dispatch = useAppDispatch();
@@ -26,7 +27,7 @@ export default function Navigation() {
       } catch (err: unknown) {
         console.error(err);
         dispatch(setUser(null));
-        navigate("/account/signin");
+        navigate(ROUTES.SIGN_IN);
       }
     };
 
@@ -34,19 +35,20 @@ export default function Navigation() {
   }, [dispatch, navigate]);
 
   const handleHome = () => {
-    navigate("/");
+    navigate(ROUTES.HOME);
   };
 
-  const handleLogout = async () => {
-    const logout = await logoutUser();
-    if (logout?.user) {
-      dispatch(logOut());
-      navigate("/login");
+  const handleSignOut = async () => {
+    const signout = await signoutUser();
+    console.log({ signout });
+    if (signout?.user) {
+      dispatch(signOut());
+      navigate(ROUTES.SIGN_IN);
     }
   };
 
   const handleSettings = () => {
-    navigate("/settings");
+    navigate(ROUTES.SETTINGS);
   };
 
   if (checkingAuth) {
@@ -68,8 +70,8 @@ export default function Navigation() {
     >
       <NavBar
         handleHome={handleHome}
-        handleLogout={handleLogout}
         handleSettings={handleSettings}
+        handleSignOut={handleSignOut}
       />
       <Container as="div" flex="1" marginTop={{ base: "70px", md: "70px" }}>
         <Outlet />

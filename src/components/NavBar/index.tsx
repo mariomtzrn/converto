@@ -17,35 +17,9 @@ import {
 import { Link } from "react-router-dom";
 
 import userImage from "@/assets/chad.png";
+import ROUTES from "@/lib/routes";
 
 import "./index.css";
-
-const Links = [
-  {
-    name: "Currency",
-    url: "/currency",
-  },
-  {
-    name: "Length",
-    url: "/length",
-  },
-  {
-    name: "Mass",
-    url: "/Mass",
-  },
-  {
-    name: "Temperature",
-    url: "/temperature",
-  },
-  {
-    name: "Time",
-    url: "/time",
-  },
-  {
-    name: "Volume",
-    url: "/volume",
-  },
-];
 
 interface MobileProps extends NavLinkProps {
   onClose: () => void;
@@ -53,8 +27,8 @@ interface MobileProps extends NavLinkProps {
 
 interface NavBarProps {
   handleHome: () => void;
-  handleLogout: () => void;
   handleSettings: () => void;
+  handleSignOut: () => void;
 }
 
 interface NavLinkProps {
@@ -132,7 +106,7 @@ const MobileNavLink = (props: MobileProps) => {
 };
 
 export default function NavBar(props: NavBarProps) {
-  const { handleHome, handleLogout, handleSettings } = props;
+  const { handleHome, handleSettings, handleSignOut } = props;
   const { onClose, onOpen, open } = useDisclosure();
 
   const onHeaderClick = () => {
@@ -196,7 +170,7 @@ export default function NavBar(props: NavBarProps) {
           </Container>
           <Container padding={0}>
             <HStack as={"nav"} display={{ base: "none", md: "flex" }}>
-              {Links.map((link) => (
+              {ROUTES.UNITS.map((link) => (
                 <NavLink key={link.url} url={link.url}>
                   {link.name}
                 </NavLink>
@@ -231,7 +205,7 @@ export default function NavBar(props: NavBarProps) {
                   </Menu.Item>
                   <Menu.Item
                     cursor={"pointer"}
-                    onClick={handleLogout}
+                    onClick={handleSignOut}
                     value="user-logout"
                   >
                     Sign out
@@ -258,7 +232,7 @@ export default function NavBar(props: NavBarProps) {
         zIndex="10"
       >
         <Stack as={"nav"}>
-          {Links.map((link) => (
+          {ROUTES.UNITS.map((link) => (
             <>
               <MobileNavLink key={link.url} onClose={onClose} url={link.url}>
                 {link.name}

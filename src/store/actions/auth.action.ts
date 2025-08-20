@@ -1,8 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
+import AuthAPIError from "@/classes/AuthAPIError";
 import handleRequestError from "@/lib/error";
-
-import AuthAPIError from "../../classes/AuthAPIError";
 
 const { VITE_API_URL } = import.meta.env;
 
@@ -11,7 +10,7 @@ interface CallbackParams {
   password: string;
 }
 
-interface LoginResponse {
+interface SignInResponse {
   user: {
     email: string;
     id: string;
@@ -23,13 +22,13 @@ interface SignupParams extends CallbackParams {
   username: string;
 }
 
-export const loginUser = createAsyncThunk<
-  LoginResponse,
+export const signinUser = createAsyncThunk<
+  SignInResponse,
   CallbackParams,
   { rejectValue: string }
->("auth/login", async ({ email, password }, { rejectWithValue }) => {
+>("auth/signin", async ({ email, password }, { rejectWithValue }) => {
   try {
-    const res = await fetch(`${VITE_API_URL}/auth/login`, {
+    const res = await fetch(`${VITE_API_URL}/auth/signin`, {
       body: JSON.stringify({ email, password }),
       credentials: "include",
       headers: {
@@ -38,11 +37,11 @@ export const loginUser = createAsyncThunk<
       method: "POST",
     });
 
-    const data = (await res.json()) as LoginResponse;
+    const data = (await res.json()) as SignInResponse;
 
     if (!res.ok) {
       const errorMessage = handleRequestError(res.status);
-      throw new AuthAPIError(errorMessage ?? "Login failed");
+      throw new AuthAPIError(errorMessage ?? "Sign in failed");
     }
 
     return data;
@@ -56,9 +55,9 @@ export const loginUser = createAsyncThunk<
   }
 });
 
-export const logoutUser = async (): Promise<LoginResponse | null> => {
+export const signoutUser = async (): Promise<null | SignInResponse> => {
   try {
-    const res = await fetch(`${VITE_API_URL}/auth/logout`, {
+    const res = await fetch(`${VITE_API_URL}/auth/signout`, {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
@@ -66,11 +65,11 @@ export const logoutUser = async (): Promise<LoginResponse | null> => {
       method: "POST",
     });
 
-    const data = (await res.json()) as LoginResponse;
+    const data = (await res.json()) as SignInResponse;
 
     if (!res.ok) {
       const errorMessage = handleRequestError(res.status);
-      throw new AuthAPIError(errorMessage ?? "Logout failed");
+      throw new AuthAPIError(errorMessage ?? "Sign out failed");
     }
 
     return data;
@@ -85,7 +84,7 @@ export const logoutUser = async (): Promise<LoginResponse | null> => {
 };
 
 export const signupUser = createAsyncThunk<
-  LoginResponse,
+  SignInResponse,
   SignupParams,
   { rejectValue: string }
 >("auth/signup", async ({ email, password, username }, { rejectWithValue }) => {
@@ -99,11 +98,11 @@ export const signupUser = createAsyncThunk<
       method: "POST",
     });
 
-    const data = (await res.json()) as LoginResponse;
+    const data = (await res.json()) as SignInResponse;
 
     if (!res.ok) {
       const errorMessage = handleRequestError(res.status);
-      throw new AuthAPIError(errorMessage ?? "Signup failed");
+      throw new AuthAPIError(errorMessage ?? "Sign up failed");
     }
 
     return data;
@@ -127,7 +126,7 @@ export const verifySession = async () => {
       method: "GET",
     });
 
-    const data = (await res.json()) as LoginResponse;
+    const data = (await res.json()) as SignInResponse;
 
     if (!res.ok) {
       const errorMessage = handleRequestError(res.status);

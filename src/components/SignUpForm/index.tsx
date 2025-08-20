@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 
 import { baseButton } from "@/assets/styles";
 import { PasswordInput } from "@/components/ui/password-input";
+import ROUTES from "@/lib/routes";
 
 interface FormValues {
   email: string;
@@ -182,7 +183,7 @@ export default function SignUpForm() {
             <Center>
               <Text>
                 Already have an account?{" "}
-                <Link to="/account/signin">Sign in</Link>
+                <Link to={ROUTES.SIGN_IN}>Sign in</Link>
               </Text>
             </Center>
           </Stack>
