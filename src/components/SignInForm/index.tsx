@@ -48,12 +48,8 @@ export default function SignInForm({ handleFormSubmit }: FormProps) {
     <form aria-label="Sign in form" onSubmit={onSubmit}>
       <Fieldset.Root size="lg">
         <Stack>
-          <Fieldset.Legend>
-            <Heading as="h2">Sign in</Heading>
-          </Fieldset.Legend>
-          <Fieldset.HelperText color="#fff">
-            Please provide your account credentials.
-          </Fieldset.HelperText>
+          <Heading as="h2">Sign in</Heading>
+          <Text>Please provide your account credentials.</Text>
         </Stack>
 
         <Fieldset.Content>

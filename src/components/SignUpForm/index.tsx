@@ -18,14 +18,18 @@ import { baseButton } from "@/assets/styles";
 import { PasswordInput } from "@/components/ui/password-input";
 import ROUTES from "@/lib/routes";
 
-interface FormValues {
+export interface FormValues {
   email: string;
   password: string;
   passwordConfirm: string;
   username: string;
 }
 
-export default function SignUpForm() {
+interface FormProps {
+  handleFormSubmit: (credentials: FormValues) => void;
+}
+
+export default function SignUpForm({ handleFormSubmit }: FormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     formState: { errors },
@@ -36,12 +40,10 @@ export default function SignUpForm() {
 
   const password = watch("password");
 
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit((data) => {
     setIsSubmitting(true);
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      const { email, password, passwordConfirm, username } = data;
+      handleFormSubmit(data);
     } finally {
       setIsSubmitting(false);
     }
@@ -51,12 +53,8 @@ export default function SignUpForm() {
     <form aria-label="Sign up form" onSubmit={onSubmit}>
       <Fieldset.Root size="lg">
         <Stack>
-          <Fieldset.Legend>
-            <Heading as="h2">Sign up</Heading>
-          </Fieldset.Legend>
-          <Fieldset.HelperText color="#fff">
-            Create an account to continue.
-          </Fieldset.HelperText>
+          <Heading as="h2">Sign up</Heading>
+          <Text>Create an account to continue.</Text>
         </Stack>
 
         <Fieldset.Content>
@@ -128,7 +126,7 @@ export default function SignUpForm() {
                 )}
                 {errors.password?.type === "maxLength" && (
                   <Text role="alert">
-                    Password must be at most 20 characters.
+                    Password must be at most 30 characters.
                   </Text>
                 )}
               </Field.ErrorText>

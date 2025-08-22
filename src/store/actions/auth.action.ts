@@ -19,6 +19,7 @@ interface SignInResponse {
 }
 
 interface SignupParams extends CallbackParams {
+  passwordConfirm: string;
   username: string;
 }
 
@@ -87,34 +88,40 @@ export const signupUser = createAsyncThunk<
   SignInResponse,
   SignupParams,
   { rejectValue: string }
->("auth/signup", async ({ email, password, username }, { rejectWithValue }) => {
-  try {
-    const res = await fetch(`${VITE_API_URL}/auth/signup`, {
-      body: JSON.stringify({ email, password, username }),
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-    });
+>(
+  "auth/signup",
+  async (
+    { email, password, passwordConfirm, username },
+    { rejectWithValue },
+  ) => {
+    try {
+      const res = await fetch(`${VITE_API_URL}/auth/signup`, {
+        body: JSON.stringify({ email, password, passwordConfirm, username }),
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      });
 
-    const data = (await res.json()) as SignInResponse;
+      const data = (await res.json()) as SignInResponse;
 
-    if (!res.ok) {
-      const errorMessage = handleRequestError(res.status);
-      throw new AuthAPIError(errorMessage ?? "Sign up failed");
+      if (!res.ok) {
+        const errorMessage = handleRequestError(res.status);
+        throw new AuthAPIError(errorMessage ?? "Sign up failed");
+      }
+
+      return data;
+    } catch (error: unknown) {
+      if (error instanceof AuthAPIError && error.message) {
+        return rejectWithValue(error.message);
+      } else if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue("Unknown error");
     }
-
-    return data;
-  } catch (error: unknown) {
-    if (error instanceof AuthAPIError && error.message) {
-      return rejectWithValue(error.message);
-    } else if (error instanceof Error) {
-      return rejectWithValue(error.message);
-    }
-    return rejectWithValue("Unknown error");
-  }
-});
+  },
+);
 
 export const verifySession = async () => {
   try {
