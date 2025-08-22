@@ -13,7 +13,11 @@ export default function Weather(props: Props) {
   const { weather } = props;
 
   if (!weather) {
-    return null;
+    return (
+      <CardWrapper desktopWidth="320px" isLoading={true} mobileWidth="100%">
+        <Text>Loading...</Text>
+      </CardWrapper>
+    );
   }
 
   const boxDescription = "" + weather.region + ", " + weather.country;
@@ -36,7 +40,7 @@ export default function Weather(props: Props) {
       <Box>
         <Flex align="center" direction="row" justify="flex-start">
           <Container padding={0}>
-            <Text cursor="pointer" fontSize="3rem" fontWeight="bold">
+            <Text cursor="pointer" fontSize="2.5rem" fontWeight="bold">
               {weather.temp_c} °C
             </Text>
           </Container>
@@ -54,7 +58,7 @@ export default function Weather(props: Props) {
       <Box>
         <Flex align="center" direction="row" justify="flex-start">
           <Container padding={0}>
-            <Text cursor="pointer" fontSize="3rem" fontWeight="bold">
+            <Text cursor="pointer" fontSize="2.5rem" fontWeight="bold">
               {weather.temp_f} °F
             </Text>
           </Container>
