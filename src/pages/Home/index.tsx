@@ -1,6 +1,6 @@
 import { GridItem, SimpleGrid, VStack } from "@chakra-ui/react";
 
-import CurrencyCalculator from "@/components/CurrencyCalculator";
+import HomeUnitSwitch from "@/components/HomeUnitSwitch";
 import Weather from "@/components/Weather";
 import useWeather from "@/hooks/useWeather";
 
@@ -9,14 +9,14 @@ export default function Home() {
 
   return (
     <SimpleGrid columns={{ base: 1, md: 4 }} gap={{ base: 4, md: 4 }}>
-      <GridItem colSpan={{ base: 1, md: 1 }}>
+      <GridItem colSpan={{ base: 1, md: 1 }} key={0}>
         <VStack gap={{ base: 2, md: 0 }}>
           <Weather weather={weather} />
         </VStack>
       </GridItem>
-      <GridItem colSpan={{ base: 1, md: 3 }}>
+      <GridItem colSpan={{ base: 1, md: 3 }} key={1}>
         <VStack gap={{ base: 2, md: 4 }}>
-          <CurrencyCalculator />
+          <HomeUnitSwitch />
         </VStack>
       </GridItem>
     </SimpleGrid>

@@ -1,0 +1,3 @@
+.chakra-segment-group__root span[data-state="checked"] {
+  font-weight: bold;
+}
