@@ -41,7 +41,7 @@ export default function Weather(props: Props) {
         <Flex align="center" direction="row" justify="flex-start">
           <Container padding={0}>
             <Text cursor="pointer" fontSize="2.5rem" fontWeight="bold">
-              {weather.temp_c} °C
+              {weather.temp_c.toFixed()} °C
             </Text>
           </Container>
           <Container maxW="40%" padding={0}>
@@ -49,7 +49,7 @@ export default function Weather(props: Props) {
               Feels like
             </Text>
             <Text color="gray.200" fontSize="1rem" fontWeight="bold">
-              {weather.feelslike_c} °C
+              {weather.feelslike_c.toFixed()} °C
             </Text>
           </Container>
         </Flex>
@@ -59,7 +59,7 @@ export default function Weather(props: Props) {
         <Flex align="center" direction="row" justify="flex-start">
           <Container padding={0}>
             <Text cursor="pointer" fontSize="2.5rem" fontWeight="bold">
-              {weather.temp_f} °F
+              {weather.temp_f.toFixed()} °F
             </Text>
           </Container>
           <Container maxW="40%" padding={0}>
@@ -67,7 +67,7 @@ export default function Weather(props: Props) {
               Feels like
             </Text>
             <Text color="gray.200" fontSize="1rem" fontWeight="bold">
-              {weather.feelslike_f} °F
+              {weather.feelslike_f.toFixed()} °F
             </Text>
           </Container>
         </Flex>

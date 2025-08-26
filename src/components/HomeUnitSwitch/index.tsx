@@ -60,10 +60,13 @@ export default function HomeUnitSwitch() {
     >
       <SegmentGroup.Root
         flexWrap="wrap"
-        minWidth="fit-content"
+        minW={{
+          base: "min-content",
+        }}
         onValueChange={handleCategoryChange}
         size="md"
         value={category}
+        width="fit-content"
       >
         <SegmentGroup.Indicator background="linear-gradient(45deg, #ffbc00, #ff0058, #8B3489)" />
         <SegmentGroup.Items items={categoryLabels} />
@@ -71,10 +74,13 @@ export default function HomeUnitSwitch() {
       {categoryUnits.length > 0 && (
         <SegmentGroup.Root
           flexWrap="wrap"
-          minWidth="fit-content"
+          minW={{
+            base: "min-content",
+          }}
           onValueChange={handleUnitChange}
           size="md"
           value={unit}
+          width="fit-content"
         >
           <SegmentGroup.Indicator background="linear-gradient(45deg, #ffbc00, #ff0058, #8B3489)" />
           <SegmentGroup.Items items={categoryUnits} />
