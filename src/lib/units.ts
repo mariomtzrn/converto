@@ -1,4 +1,13 @@
+import { fetchURL } from "@/lib/request";
+
+const { VITE_API_URL } = import.meta.env;
+
 export type UnitCategoryKey = keyof typeof unitCategories;
+
+interface ConversionResponse {
+  id: string;
+  result: string;
+}
 
 export const unitCategories = {
   currency: {
@@ -7,7 +16,7 @@ export const unitCategories = {
   },
   digital: {
     label: "Digital",
-    units: ["Digital"],
+    units: ["Filesize"],
   },
   measurement: {
     label: "Measurement",
@@ -34,10 +43,68 @@ export const unitCategories = {
   },
 };
 
-export const getCategoryLabels = () => {
-  return Object.values(unitCategories).map((category) => category.label);
-};
+export async function convertUnit(
+  type: string,
+  baseUnit: string,
+  targetUnit: string,
+  value: number,
+): Promise<ConversionResponse | null> {
+  try {
+    const url = new URL(VITE_API_URL + `/unit/${type}`);
+    const response = await fetchURL<ConversionResponse>(url, "POST", {
+      baseUnit: baseUnit,
+      targetUnit: targetUnit,
+      value: value,
+    });
+    if (!response) {
+      throw new Error(`Response status: 500`);
+    }
+    console.log({ response });
+    return response;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
 
-export const getUnitsByCategory = (category: UnitCategoryKey) => {
+export function getCategoryLabels() {
+  return Object.values(unitCategories).map((category) => category.label);
+}
+
+export async function getSelectedUnitTypes(
+  unitType: string,
+): Promise<null | string[]> {
+  try {
+    const url = new URL(
+      VITE_API_URL + "/unit/types/selected?unitType=" + unitType,
+    );
+    const response = await fetchURL<string[]>(url);
+    if (!response) {
+      throw new Error(`Response status: 500`);
+    }
+    console.log({ response });
+    return response;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export function getUnitsByCategory(category: UnitCategoryKey) {
   return unitCategories[category].units;
-};
+}
+
+export async function getUnitTypes(unitType: string): Promise<null | string[]> {
+  try {
+    const url = new URL(VITE_API_URL + "/unit/types?unitType=" + unitType);
+    const response = await fetchURL<string[]>(url);
+    if (!response) {
+      throw new Error(`Response status: 500`);
+    }
+    console.log({ response });
+    return response;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}

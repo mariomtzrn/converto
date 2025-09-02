@@ -4,9 +4,9 @@ import { UseFormSetError, UseFormSetValue } from "react-hook-form";
 
 import Form, { FormInputs } from "@/components/Form";
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import useSelectedCurrencies from "@/hooks/useSelectedCurrencies";
-import { convertCurrency } from "@/lib/currency";
-import { addToHistory } from "@/slices/currencySlice";
+import useUnits from "@/hooks/useUnits";
+import { convertUnit } from "@/lib/units";
+import { addToHistory } from "@/slices/unitSlice";
 
 interface ConversionResultParams {
   convertResult: { id: string; result: string };
@@ -16,10 +16,14 @@ interface ConversionResultParams {
   toUnit: string;
 }
 
-export default function CurrencyCalculator() {
+interface Props {
+  unitName: string;
+}
+
+export default function UnitCalculator({ unitName }: Props) {
   const dispatch = useAppDispatch();
   const { userInfo } = useAppSelector((state) => state.auth);
-  const { options, selectedCurrencies } = useSelectedCurrencies();
+  const { selectedUnits } = useUnits(unitName);
   const [result, setResult] = useState<string>("");
 
   const conversionResult = (params: ConversionResultParams) => {
@@ -27,14 +31,17 @@ export default function CurrencyCalculator() {
     if (userInfo) {
       dispatch(
         addToHistory({
-          conversion_type: "currency",
-          created_at: new Date().toISOString(),
-          from_unit: fromUnit,
-          from_value: fromValue,
-          id: convertResult.id,
-          to_unit: toUnit,
-          to_value: parseFloat(convertResult.result),
-          user_id: userInfo.id,
+          conversion: {
+            conversion_type: unitName,
+            created_at: new Date().toISOString(),
+            from_unit: fromUnit,
+            from_value: fromValue,
+            id: convertResult.id,
+            to_unit: toUnit,
+            to_value: parseFloat(convertResult.result),
+            user_id: userInfo.id,
+          },
+          unitType: unitName,
         }),
       );
     }
@@ -79,67 +86,51 @@ export default function CurrencyCalculator() {
     }
 
     if (lastInput === "inputA") {
-      const currencyA = selectedCurrencies?.find((currency) =>
-        selectA.includes(currency.code),
-      );
-      const currencyB = selectedCurrencies?.find((currency) =>
-        selectB.includes(currency.code),
-      );
-      if (currencyA && currencyB) {
-        const convertResult = await convertCurrency(
-          inputA,
-          currencyA.code,
-          currencyB.code,
-        );
+      const unitA = selectedUnits?.find((unit) => selectA.includes(unit));
+      const unitB = selectedUnits?.find((unit) => selectB.includes(unit));
+      if (unitA && unitB) {
+        const convertResult = await convertUnit(unitName, unitA, unitB, inputA);
         if (!convertResult) {
           setError("inputA", {
-            message: "Error converting currency",
+            message: "Error converting unit",
             type: "manual",
           });
           return;
         }
         conversionResult({
           convertResult,
-          fromUnit: currencyA.code,
+          fromUnit: unitA,
           fromValue: inputA,
           input: "inputB",
-          toUnit: currencyB.code,
+          toUnit: unitB,
         });
         setValue("inputB", parseFloat(convertResult.result));
       }
     } else if (lastInput === "inputB") {
-      const currencyA = selectedCurrencies?.find((currency) =>
-        selectA.includes(currency.code),
-      );
-      const currencyB = selectedCurrencies?.find((currency) =>
-        selectB.includes(currency.code),
-      );
-      if (currencyA && currencyB) {
-        const convertResult = await convertCurrency(
-          inputB,
-          currencyB.code,
-          currencyA.code,
-        );
+      const unitA = selectedUnits?.find((unit) => selectA.includes(unit));
+      const unitB = selectedUnits?.find((unit) => selectB.includes(unit));
+      if (unitA && unitB) {
+        const convertResult = await convertUnit(unitName, unitB, unitA, inputB);
         if (!convertResult) {
           setError("inputB", {
-            message: "Error converting currency",
+            message: "Error converting unit",
             type: "manual",
           });
           return;
         }
         conversionResult({
           convertResult,
-          fromUnit: currencyB.code,
+          fromUnit: unitB,
           fromValue: inputB,
           input: "inputA",
-          toUnit: currencyA.code,
+          toUnit: unitA,
         });
         setValue("inputA", parseFloat(convertResult.result));
       }
     }
   };
 
-  if (!options) {
+  if (!selectedUnits) {
     return (
       <Flex align="center" direction="row" justify="center" p={4}>
         <Spinner size="xl" />
@@ -153,7 +144,7 @@ export default function CurrencyCalculator() {
         conversionResult={result}
         layout="homepage"
         onFormSubmit={handleSubmit}
-        options={options}
+        options={selectedUnits}
       />
     </Container>
   );

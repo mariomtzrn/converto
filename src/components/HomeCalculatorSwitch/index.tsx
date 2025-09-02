@@ -2,7 +2,7 @@ import { SegmentGroup, SegmentGroupValueChangeDetails } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 import CardWrapper from "@/components/CardWrapper";
-import HomeUnitCalculator from "@/components/HomeUnitCalculator";
+import HomeCalculator from "@/components/HomeCalculator";
 import {
   getCategoryLabels,
   getUnitsByCategory,
@@ -11,7 +11,7 @@ import {
 
 import "./index.css";
 
-export default function HomeUnitSwitch() {
+export default function HomeCalculatorSwitch() {
   const categoryLabels = getCategoryLabels();
   const [category, setCategory] = useState<null | string>(categoryLabels[0]);
   const [categoryUnits, setCategoryUnits] = useState<string[]>([]);
@@ -36,7 +36,6 @@ export default function HomeUnitSwitch() {
       const selectedCategory: UnitCategoryKey =
         event.value.toLowerCase() as UnitCategoryKey;
       const selectedCategoryUnits = getUnitsByCategory(selectedCategory);
-      console.log({ selectedCategory, selectedCategoryUnits });
       if (selectedCategoryUnits) {
         setCategoryUnits(selectedCategoryUnits);
         setUnit(selectedCategoryUnits[0]);
@@ -86,7 +85,7 @@ export default function HomeUnitSwitch() {
           <SegmentGroup.Items items={categoryUnits} />
         </SegmentGroup.Root>
       )}
-      <HomeUnitCalculator unit={unit} />
+      {unit && <HomeCalculator unit={unit} />}
     </CardWrapper>
   );
 }

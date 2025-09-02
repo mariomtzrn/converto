@@ -3,11 +3,7 @@ import logger from "redux-logger";
 
 import authReducer from "@/slices/authSlice";
 import currencyReducer from "@/slices/currencySlice";
-import lengthReducer from "@/slices/lengthSlice";
-import massReducer from "@/slices/massSlice";
-import temperatureReducer from "@/slices/temperatureSlice";
-import timeReducer from "@/slices/timeSlice";
-import volumeReducer from "@/slices/volumeSlice";
+import unitReducer from "@/slices/unitSlice";
 import weatherReducer from "@/slices/weatherSlice";
 
 // Logger middleware in dev environment
@@ -23,11 +19,7 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
     currency: currencyReducer,
-    length: lengthReducer,
-    mass: massReducer,
-    temperature: temperatureReducer,
-    time: timeReducer,
-    volume: volumeReducer,
+    unit: unitReducer,
     weather: weatherReducer,
   },
 });
