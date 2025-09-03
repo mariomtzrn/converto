@@ -36,10 +36,11 @@ interface FormProps {
     setValue: UseFormSetValue<FormInputs>,
   ) => void;
   options: string[];
+  unitName?: string;
 }
 
 export default function Form(props: FormProps) {
-  const { layout, onFormSubmit, options } = props;
+  const { layout, onFormSubmit, options, unitName } = props;
   const [lastInput, setLastInput] = useState<string>();
   const isMobile = useBreakpointValue({
     base: true,
@@ -63,6 +64,7 @@ export default function Form(props: FormProps) {
     formState: { errors },
     handleSubmit,
     register,
+    resetField,
     setError,
     setValue,
   } = useForm<FormInputs>({
@@ -71,6 +73,11 @@ export default function Form(props: FormProps) {
       selectB: defaultB,
     },
   });
+
+  useEffect(() => {
+    resetField("inputA");
+    resetField("inputB");
+  }, [resetField, unitName]);
 
   useEffect(() => {
     setValue("selectA", options[0]);

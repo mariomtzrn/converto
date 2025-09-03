@@ -50,10 +50,11 @@ export async function convertUnit(
   value: number,
 ): Promise<ConversionResponse | null> {
   try {
-    const url = new URL(VITE_API_URL + `/unit/${type}`);
+    const url = new URL(VITE_API_URL + `/unit/convert`);
     const response = await fetchURL<ConversionResponse>(url, "POST", {
       baseUnit: baseUnit,
       targetUnit: targetUnit,
+      unitType: type,
       value: value,
     });
     if (!response) {

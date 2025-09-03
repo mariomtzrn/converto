@@ -1,5 +1,5 @@
 import { Container, Flex, Spinner } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UseFormSetError, UseFormSetValue } from "react-hook-form";
 
 import Form, { FormInputs } from "@/components/Form";
@@ -7,6 +7,8 @@ import { useAppDispatch, useAppSelector } from "@/hooks";
 import useUnits from "@/hooks/useUnits";
 import { convertUnit } from "@/lib/units";
 import { addToHistory } from "@/slices/unitSlice";
+
+// TODO: Clear input fields when switching between unit types
 
 interface ConversionResultParams {
   convertResult: { id: string; result: string };
@@ -25,6 +27,10 @@ export default function UnitCalculator({ unitName }: Props) {
   const { userInfo } = useAppSelector((state) => state.auth);
   const { selectedUnits } = useUnits(unitName);
   const [result, setResult] = useState<string>("");
+
+  useEffect(() => {
+    setResult("");
+  }, [unitName]);
 
   const conversionResult = (params: ConversionResultParams) => {
     const { convertResult, fromUnit, fromValue, toUnit } = params;
@@ -145,6 +151,7 @@ export default function UnitCalculator({ unitName }: Props) {
         layout="homepage"
         onFormSubmit={handleSubmit}
         options={selectedUnits}
+        unitName={unitName}
       />
     </Container>
   );
