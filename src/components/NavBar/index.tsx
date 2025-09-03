@@ -62,13 +62,13 @@ const NavLink = (props: NavLinkProps) => {
       <ChakraLink
         _active={{ border: "none", color: "#DFD0B8" }}
         _hover={{
-          color: "#DFD0B8",
+          color: "#fff",
           textShadow:
-            "0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073",
+            "0 0 5px #fff, 0 0 5px #fff, 0 0 5px #e60073, 0 0 5px #e60073, 0 0 5px #e60073, 0 0 5px #e60073, 0 0 5px #e60073",
         }}
         asChild
         color="#fff"
-        transition="color 150ms ease-in-out"
+        transition="all 150ms ease-in-out"
       >
         <Link to={url}>{children}</Link>
       </ChakraLink>
@@ -153,9 +153,9 @@ export default function NavBar(props: NavBarProps) {
             <Text
               _active={{ border: "none", color: "#DFD0B8" }}
               _hover={{
-                color: "#DFD0B8",
+                color: "#fff",
                 textShadow:
-                  "0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073",
+                  "0 0 5px #fff, 0 0 5px #fff, 0 0 5px #e60073, 0 0 5px #e60073, 0 0 5px #e60073, 0 0 5px #e60073, 0 0 5px #e60073",
               }}
               color="#fff"
               cursor="pointer"
@@ -163,7 +163,7 @@ export default function NavBar(props: NavBarProps) {
               fontSize={30}
               marginBottom={0.8}
               onClick={onHeaderClick}
-              transition="color 150ms ease-in-out"
+              transition="all 150ms ease-in-out"
             >
               CONVERTO
             </Text>
