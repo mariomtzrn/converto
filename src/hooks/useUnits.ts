@@ -7,7 +7,9 @@ import { setSelectedUnits } from "@/slices/unitSlice";
 
 export default function useUnits(unitName: string) {
   const dispatch = useAppDispatch();
-  const { selectedUnits } = useAppSelector((state) => state.unit[unitName]);
+  const { currentPage, invalidatedHistory, selectedUnits } = useAppSelector(
+    (state) => state.unit[unitName],
+  );
 
   useEffect(() => {
     async function getUnits() {
@@ -28,5 +30,5 @@ export default function useUnits(unitName: string) {
     if (!selectedUnits || selectedUnits.length === 0) getUnits();
   }, [dispatch, selectedUnits, unitName]);
 
-  return { selectedUnits };
+  return { currentPage, invalidatedHistory, selectedUnits };
 }

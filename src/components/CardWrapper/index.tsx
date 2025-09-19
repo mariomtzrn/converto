@@ -5,8 +5,10 @@ interface Props {
   boxTitle?: string;
   children: React.ReactNode;
   desktopWidth: string;
+  gap?: string;
   isLoading: boolean;
   mobileWidth: string;
+  padding?: string;
 }
 
 export default function CardWrapper(props: Props) {
@@ -15,8 +17,10 @@ export default function CardWrapper(props: Props) {
     boxTitle,
     children,
     desktopWidth,
+    gap,
     isLoading,
     mobileWidth,
+    padding,
   } = props;
 
   const loadingContainer = (
@@ -44,7 +48,7 @@ export default function CardWrapper(props: Props) {
       width="100%"
       zIndex={1}
     >
-      <Card.Body gap="2">
+      <Card.Body gap={gap ?? "2"} padding={padding ?? "8"}>
         {boxTitle && <Card.Title maxW="80%">{boxTitle}</Card.Title>}
         {boxDescription && (
           <Card.Description maxW="80%">{boxDescription}</Card.Description>

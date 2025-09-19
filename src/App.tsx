@@ -6,6 +6,7 @@ import Home from "@/pages/Home";
 import NewAccount from "@/pages/NewAccount";
 import SignIn from "@/pages/SignIn";
 import SignUp from "@/pages/SignUp";
+import UnitPage from "@/pages/UnitPage";
 
 import "./App.css";
 
@@ -14,6 +15,7 @@ function App() {
     <Routes>
       <Route element={<Navigation />} path="/">
         <Route element={<Home />} index />
+        <Route element={<UnitPage unitName="length" />} path="/length" />
       </Route>
       <Route element={<SignFormWrapper />} path="/account">
         <Route element={<SignIn />} path="/account/signin" />

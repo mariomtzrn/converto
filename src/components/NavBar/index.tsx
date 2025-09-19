@@ -161,7 +161,7 @@ export default function NavBar(props: NavBarProps) {
               cursor="pointer"
               fontFamily="Oswald"
               fontSize={30}
-              marginBottom={0.8}
+              marginBottom={1}
               onClick={onHeaderClick}
               transition="all 150ms ease-in-out"
             >

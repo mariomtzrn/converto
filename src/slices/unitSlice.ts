@@ -7,8 +7,9 @@ import { ConversionRow } from "@/lib/history";
 type ConversionState = Record<
   string,
   {
-    conversionHistory: ConversionRow[];
     currentPage: number;
+    currentPageItems: ConversionRow[];
+    invalidatedHistory: number;
     itemsPerPage: number;
     selectedUnits: string[];
     totalConversions: number;
@@ -16,8 +17,9 @@ type ConversionState = Record<
 >;
 
 const initialUnitState = {
-  conversionHistory: [],
   currentPage: 1,
+  currentPageItems: [],
+  invalidatedHistory: 0,
   itemsPerPage: 10,
   selectedUnits: [],
   totalConversions: 0,
@@ -46,26 +48,33 @@ export const unitSlice = createSlice({
   initialState,
   name: "units",
   reducers: {
-    addToHistory: (
+    addToCurrentPage: (
       state,
       action: PayloadAction<{ conversion: ConversionRow; unitType: string }>,
     ) => {
       const { conversion, unitType } = action.payload;
-      state[unitType].conversionHistory = [
+      state[unitType].currentPageItems = [
         conversion,
-        ...state[unitType].conversionHistory,
+        ...state[unitType].currentPageItems,
       ];
     },
-    clearHistory: (state, action: PayloadAction<{ unitType: string }>) => {
+    addToTotalConversions: (
+      state,
+      action: PayloadAction<{ unitType: string }>,
+    ) => {
       const { unitType } = action.payload;
-      state[unitType].conversionHistory = [];
+      state[unitType].totalConversions += 1;
     },
-    removeFromHistory: (
+    clearCurrentPage: (state, action: PayloadAction<{ unitType: string }>) => {
+      const { unitType } = action.payload;
+      state[unitType].currentPageItems = [];
+    },
+    removeFromCurrentPage: (
       state,
       action: PayloadAction<{ index: number; unitType: string }>,
     ) => {
       const { index, unitType } = action.payload;
-      state[unitType].conversionHistory.splice(index, 1);
+      state[unitType].currentPageItems.splice(index, 1);
     },
     setCurrentPage: (
       state,
@@ -79,7 +88,15 @@ export const unitSlice = createSlice({
       action: PayloadAction<{ history: ConversionRow[]; unitType: string }>,
     ) => {
       const { history, unitType } = action.payload;
-      state[unitType].conversionHistory = history;
+      state[unitType].currentPageItems = history;
+    },
+    setInvalidatedHistory: (
+      state,
+      action: PayloadAction<{ unitType: string }>,
+    ) => {
+      const { unitType } = action.payload;
+      state[unitType].invalidatedHistory += 1;
+      state[unitType].currentPage = 1;
     },
     setItemsPerPage: (
       state,
@@ -106,11 +123,13 @@ export const unitSlice = createSlice({
 });
 
 export const {
-  addToHistory,
-  clearHistory,
-  removeFromHistory,
+  addToCurrentPage,
+  addToTotalConversions,
+  clearCurrentPage,
+  removeFromCurrentPage,
   setCurrentPage,
   setHistory,
+  setInvalidatedHistory,
   setItemsPerPage,
   setSelectedUnits,
   setTotalConversions,
